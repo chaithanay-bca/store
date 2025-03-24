@@ -1,13 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, Product
+from .models import CustomUser  # ✅ Removed Product import
 
-# ✅ Register CustomUser model properly
+# ✅ Register CustomUser properly
 admin.site.register(CustomUser, UserAdmin)
-
-# ✅ Register Product model properly
-@admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'category')
-
-
