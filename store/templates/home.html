@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Website</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+
+    <div id="login-container">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button class="login-btn" onclick="validateLogin()">Login</button>
+        <p id="error-message">Invalid Username or Password</p>
+        <p><a href="#" onclick="showRegisterForm()">Create New User</a></p>
+        <p><a href="#" onclick="showForgotPasswordForm()">Forgot Password?</a></p>
+    </div>
+
+    <div id="register-container" style="display: none;">
+        <h2>Create New Account</h2>
+        <input type="text" id="new-username" placeholder="Choose a Username">
+        <input type="password" id="new-password" placeholder="Choose a Password">
+        <button class="login-btn" onclick="registerUser()">Register</button>
+        <p><a href="#" onclick="showLoginForm()">Back to Login</a></p>
+    </div>
+
+    <div id="forgot-password-container" style="display: none;">
+        <h2>Reset Password</h2>
+        <input type="text" id="reset-username" placeholder="Enter your Username">
+        <button class="login-btn" onclick="resetPassword()">Reset Password</button>
+        <p><a href="#" onclick="showLoginForm()">Back to Login</a></p>
+    </div>
+
+    <div id="main-content" style="display: none;">
+        <nav class="navbar">
+            <h1 class="logo">Curious Cart</h1>
+            <ul>
+                <li><a href="#" onclick="filterProducts('All')">All</a></li>
+                <li><a href="#" onclick="filterProducts('Men')">Men</a></li>
+                <li><a href="#" onclick="filterProducts('Women')">Women</a></li>
+                <li><a href="#" onclick="filterProducts('Kids')">Kids</a></li>
+                <li><a href="#" onclick="viewCart()">Cart</a></li>
+            </ul>
+        </nav>
+        <section id="products"></section>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Website</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background: #f8f8f8;
+        }
+        #login-container {
+            width: 300px;
+            margin: 100px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: #ff6b6b;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #e64a4a;
+        }
+
+        #error-message {
+            color: red;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Hide Main Content Initially */
+        #main-content {
+            display: none;
+        }
+        /* Navigation Bar */
+        .navbar {
+            background: linear-gradient(45deg, #ff6b6b, #556270);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 20px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        /* Product Grid */
+        #products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        /* Product Card */
+        .product {
+            background: white;
+            padding: 20px;
+            width: 220px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .product h3 {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .product p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* Like Button */
+        .like-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: gray;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .like-btn.liked {
+            color: red;
+        }
+
+        /* Buy Button */
+        .buy-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .buy-btn:hover {
+            background: #e64a4a;
+        }
+    </style>
+</head>
+<body>
+    
+        <div id="login-container">
+            <h2>Login</h2>
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button class="login-btn" onclick="validateLogin()">Login</button>
+            <p id="error-message">Invalid Username or Password</p>
+            <p><a href="#" onclick="showRegisterForm()">Create New User</a></p>
+            <p><a href="#" onclick="showForgotPasswordForm()">Forgot Password?</a></p>
+    </div>
+    <div id="register-container" style="display: none;">
+        <h2>Create New Account</h2>
+        <input type="text" id="new-username" placeholder="Choose a Username">
+        <input type="password" id="new-password" placeholder="Choose a Password">
+        <button class="login-btn" onclick="registerUser()">Register</button>
+        <p><a href="#" onclick="showLoginForm()">Back to Login</a></p>
+    </div>
+    
+    <div id="forgot-password-container" style="display: none;">
+        <h2>Reset Password</h2>
+        <input type="text" id="reset-username" placeholder="Enter your Username">
+        <button class="login-btn" onclick="resetPassword()">Reset Password</button>
+        <p><a href="#" onclick="showLoginForm()">Back to Login</a></p>
+    </div>
+    
+
+    
+        <h1>Welcome to Curious Cart!</h1>
+    
+    
+        <!-- Main Content -->
+        <div id="main-content" style="display: none;"
+            
+        <nav class="navbar">
+            <h1 class="logo">Curious Cart</h1>
+            <ul>
+                <li><a href="#" onclick="filterProducts('All')">All</a></li>
+                <li><a href="#" onclick="filterProducts('Men')">Men</a></li>
+                <li><a href="#" onclick="filterProducts('Women')">Women</a></li>
+                <li><a href="#" onclick="filterProducts('Kids')">Kids</a></li>
+                <li><a href="#" onclick="viewCart()">Cart</a></li>
+            </ul>
+        </nav>
+    
+    
+        <section id="products"></section>
+
+    </div>
+    </body>
+    
+    <script>
+         
+           
+
+    // Local storage-based user management
+    let users = JSON.parse(localStorage.getItem("users")) || [{ username: "admin", password: "password123" }];
+
+    // Show/hide different forms
+    function showLoginForm() {
+        document.getElementById("login-container").style.display = "block";
+        document.getElementById("register-container").style.display = "none";
+        document.getElementById("forgot-password-container").style.display = "none";
+    }
+
+    function showRegisterForm() {
+        document.getElementById("login-container").style.display = "none";
+        document.getElementById("register-container").style.display = "block";
+        document.getElementById("forgot-password-container").style.display = "none";
+    }
+
+    function showForgotPasswordForm() {
+        document.getElementById("login-container").style.display = "none";
+        document.getElementById("register-container").style.display = "none";
+        document.getElementById("forgot-password-container").style.display = "block";
+    }
+
+    // Validate Login
+    function validateLogin() {
+        let username = document.getElementById("username").value.trim();
+        let password = document.getElementById("password").value.trim();
+        let errorMessage = document.getElementById("error-message");
+
+        let users = JSON.parse(localStorage.getItem("users")) || [{ username: "admin", password: "password123" }];
+        let user = users.find(u => u.username === username && u.password === password);
+
+        if (user) {
+            localStorage.setItem("loggedInUser", username);
+            alert("Login Successful!");
+
+            // Hide login form, show shopping page
+            document.getElementById("login-container").style.display = "none";
+            document.getElementById("main-content").style.display = "block";
+            
+            filterProducts("All");
+        
+
+        } else {
+            errorMessage.style.display = "block";
+            errorMessage.textContent = "Invalid Username or Password";
+        }
+    }
+
+    // Register New User
+    function registerUser() {
+        let newUsername = document.getElementById("new-username").value.trim();
+        let newPassword = document.getElementById("new-password").value.trim();
+
+        if (!newUsername || !newPassword) {
+            alert("Please fill in all fields.");
+            return;
+        }
+        let users = JSON.parse(localStorage.getItem("users")) || []; // Get users from localStorage
+
+        let existingUser = users.find(u => u.username === newUsername);
+        if (existingUser) {
+            alert("Username already taken. Choose a different username.");
+            return;
+        }
+
+        users.push({ username: newUsername, password: newPassword });
+        localStorage.setItem("users", JSON.stringify(users));
+        alert("Account Created! You can now log in.");
+        showLoginForm();
+    }
+
+    // Reset Password
+    function resetPassword() {
+    let resetUsername = document.getElementById("reset-username").value.trim();
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    let userIndex = users.findIndex(u => u.username === resetUsername);
+
+    if (userIndex === -1) {
+        alert("Username not found.");
+        return;
+    }
+
+    let newPassword = prompt("Enter a new password:");
+    if (!newPassword) {
+        alert("Password cannot be empty.");
+        return;
+    }
+
+    users[userIndex].password = newPassword; // Update password
+    localStorage.setItem("users", JSON.stringify(users)); // Save updated users list
+    alert("Password reset successful! Please log in with your new password.");
+    showLoginForm();
+}
+
+    
+
+    document.addEventListener("DOMContentLoaded", () => filterProducts("All"));
+
+    const products = [
+        ...Array.from({ length: 15 }, (_, i) => ({ id: i + 1, name: `Men's Item ${i + 1}`, category: "Men" })),
+        ...Array.from({ length: 15 }, (_, i) => ({ id: i + 16, name: `Women's Item ${i + 1}`, category: "Women" })),
+        ...Array.from({ length: 15 }, (_, i) => ({ id: i + 31, name: `Kids' Item ${i + 1}`, category: "Kids" }))
+    ];
+
+    let cart = [];
+
+    function displayProducts(filteredProducts) {
+        const productsSection = document.getElementById("products");
+        productsSection.innerHTML = "";
+        filteredProducts.forEach(product => {
+            const productDiv = document.createElement("div");
+            productDiv.className = "product";
+            productDiv.innerHTML = `
+                <button class="like-btn" onclick="toggleLike(this)">❤</button>
+                <h3>${product.name}</h3>
+                <p>Category: ${product.category}</p>
+                <button class="buy-btn" onclick="addToCart('${product.name}')">Buy Now</button>
+            `;
+            productsSection.appendChild(productDiv);
+        });
+    }
+
+    function toggleLike(button) {
+        button.classList.toggle("liked");
+    }
+
+    function addToCart(productName) {
+        cart.push(productName);
+        alert(`${productName} added to cart!`);
+    }
+
+    function filterProducts(category) {
+        if (category === "All") {
+            displayProducts(products);
+        } else {
+            displayProducts(products.filter(product => product.category === category));
+        }
+    }
+
+</script>
+
+    </script>
+</body>
+</html>
